@@ -27,8 +27,8 @@ fullOr ::
   a
   -> Optional a
   -> a
-fullOr =
-  error "todo: Course.Optional#fullOr"
+fullOr x Empty = x
+fullOr _ (Full x) = x
 
 -- | Map the given function on the possible value.
 --
@@ -41,8 +41,10 @@ mapOptional ::
   (a -> b)
   -> Optional a
   -> Optional b
-mapOptional =
-  error "todo: Course.Optional#mapOptional"
+mapOptional f Empty = Empty
+mapOptional f (Full x) = Full $ f x
+-- Alternative solution:
+-- mapOptional = P.fmap
 
 -- | Bind the given function on the possible value.
 --
@@ -58,8 +60,8 @@ bindOptional ::
   (a -> Optional b)
   -> Optional a
   -> Optional b
-bindOptional =
-  error "todo: Course.Optional#bindOptional"
+bindOptional f Empty = Empty
+bindOptional f (Full x) = f x
 
 -- | Try the first optional for a value. If it has a value, use it; otherwise,
 -- use the second value.
@@ -79,8 +81,8 @@ bindOptional =
   Optional a
   -> Optional a
   -> Optional a
-(<+>) =
-  error "todo: Course.Optional#(<+>)"
+(<+>) (Full x) _ = Full x
+(<+>) Empty opt = opt
 
 -- | Replaces the Full and Empty constructors in an optional.
 --
@@ -94,8 +96,8 @@ optional ::
   -> b
   -> Optional a
   -> b
-optional =
-  error "todo: Course.Optional#optional"
+optional f def Empty = def
+optional f _ (Full x) = f x
 
 applyOptional :: Optional (a -> b) -> Optional a -> Optional b
 applyOptional f a = bindOptional (\f' -> mapOptional f' a) f
