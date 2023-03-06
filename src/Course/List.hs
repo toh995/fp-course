@@ -269,12 +269,6 @@ find f Nil    = Empty
 find f (h :. t)
   | f h       = Full h
   | otherwise = find f t
--- find f = foldLeft g Empty
---   where
---     g (Full x) _  = Full x
---     g Empty    x
---       | f x       = Full x
---       | otherwise = Empty
 
 -- | Determine if the length of the given list is greater than 4.
 --
@@ -339,7 +333,9 @@ produce f x = x :. produce f (f x)
 notReverse ::
   List a
   -> List a
-notReverse = id
+-- `reverse` is the only function which satisifies both properties
+-- For an explanation, see https://github.com/tonymorris/fp-course/blob/c910b1b/src/Course/List.hs#L335-L411
+notReverse = reverse
 
 ---- End of list exercises
 
